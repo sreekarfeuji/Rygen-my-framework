@@ -1,0 +1,1 @@
+Base_Url = "https://qa.rygen.com/corsair/"
