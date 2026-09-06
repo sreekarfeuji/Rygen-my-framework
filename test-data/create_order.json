@@ -1,34 +1,98 @@
 {
     "test_1": {
         "stop-1": {
-            "mandatory": {
+            "span": {
+                "State": "Alaska",
+                "Timezone": "America/Managua (CST -06:00)",
+                "radio-buttons": {
+                    "Appointment_Required": "Yes",
+                    "Save_to_Address_Book": "Yes",
+                    "Requested_Date_Lock": "Yes",
+                    "Requested_Time_Lock": "No"
+                }
+            },
+            "input": {
                 "Location_Name": "Test Warehouse",
                 "Address_Line_1": "123 Main Street",
-                "City": "Alaska11",
-                "State": "Alaska",
-                "Postal_Code": "500081"
-            },
-            "optional": {
                 "Address_Line_2": "Building A",
                 "Address_Line_3": "Near Central Mall",
-                "Location_Code": "HYD001",
+                "City": "Anchorage",
+                "Postal_Code": "99501",
+                "Location_Code": "ANC009",
                 "Contact_Name": "Test User",
                 "Contact_Phone_Number": "9876543210",
                 "Contact_Email": "testuser@example.com",
                 "Company_Name": "Test Logistics Pvt Ltd",
-                "Requested_Earliest_Pickup": "02/20/2003 08:00 am",
-                "Requested_Latest_Pickup": "09/10/2026 18:00",
-                "Timezone": "Asia/Kolkata",
-                "Internal_Notes": "Test order created using Playwright",
-                "Carrier_Special_Instructions": "Handle shipment carefully",
-                "radio-buttons": {
-                    "Appointment_Required": "No",
-                    "Save_to_Address_Book": "No",
-                    "Requested_Date_Lock": "No",
-                    "Requested_Time_Lock": "No"
-                }
+                "Requested_Earliest_Pickup": "02/20/2026 08:00 am",
+                "Requested_Latest_Pickup": "02/28/2026 05:00 pm"
             }
-            
+
+        },
+        "stop-2": {
+            "span": {
+                "State": "Texas",
+                "radio-buttons": {
+                    "Appointment_Required": "Yes",
+                    "Save_to_Address_Book": "Yes",
+                    "Requested_Date_Lock": "Yes",
+                    "Requested_Time_Lock": "Yes"
+                }
+            },
+            "input": {
+                "Location_Name": "Destination Warehouse",
+                "Address_Line_1": "456 Industrial Parkway",
+                "Address_Line_2": "Building B",
+                "Address_Line_3": "Gate 4",
+                "City": "Dallas",
+                "Postal_Code": "75001",
+                "Location_Code": "DAL009",
+                "Contact_Name": "Receiver User",
+                "Contact_Phone_Number": "9123456789",
+                "Contact_Email": "receiver@example.com",
+                "Company_Name": "Destination Hub Pvt Ltd",
+                "Requested_Earliest_Dropoff": "03/01/2026 09:00 am",
+                "Requested_Latest_Dropoff": "03/05/2026 05:00 pm"
+            }
+
+        },
+        "line-item-num-1": {
+            "span": {
+                "radio-buttons": {
+                    "Turnable": "No",
+                    "Stackable": "No",
+                    "Refrigerated": "No",
+                    "Save_to_Product_List": "No"
+                }
+            },
+            "input": {
+                "Handling": "30",
+                "Description": "General Freight",
+                "Weight": "500",
+                "Length": "48",
+                "Width": "40",
+                "Height": "60",
+                "NMFC_Number": "12345-1",
+                "Linear_Feet": "4",
+                "Product_Number": "PROD-1001",
+                "Density": "12.5",
+                "Value": "1500.00"
+            }
+        },
+        "bill-to": {
+            "input": {
+                "Location_Name": "Novapath Supply Chain Systems",
+                "Address_Line_1": "1175 Revolution Mill Dr.",
+                "Address_Line_2": "Suite 19",
+                "City": "Greensboro",
+                "Postal_Code": "27405"
+            },
+            "span": {
+                "State": "North Carolina"
+            }
+        },
+        "basic-information": {
+            "direction": "Outbound",
+            "billing_terms": "Collect"
         }
     }
 }

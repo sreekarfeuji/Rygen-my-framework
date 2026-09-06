@@ -19,7 +19,7 @@ def test2(page: Page):
 
     z = Order(page)
 
-    z.select_domain_modal("23")
+    z.select_domain_modal("JCB")
     z.cancel_click()
     z.click_order()
     z.cancel_click()
@@ -32,9 +32,13 @@ def test2(page: Page):
 
         for section, section_data in data.items():
 
-            z.common_component(
-                test_name,
-                section,
-                section_data
-            )
-            
+            if section in ["basic-information", "basic_information"]:
+                z.basic_information(**section_data)
+            else:
+                z.common_component(
+                    test_name,
+                    section,
+                    section_data
+                )
+    z.click_create_order()
+    page.wait_for_timeout(1000000)
