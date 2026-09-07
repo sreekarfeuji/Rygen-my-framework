@@ -6,7 +6,6 @@
       <style type="text/css">body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 12px;
-  /* do not increase min-width as some may use split screens */
   min-width: 800px;
   color: #999;
 }
@@ -334,7 +333,6 @@ div.media {
       <h2>Environment</h2>
     </div>
     <table id="environment"></table>
-    <!-- TEMPLATES -->
       <template id="template_environment_row">
       <tr>
         <td></td>
@@ -702,8 +700,6 @@ const renderContent = (tests) => {
 
     const newTable = document.createElement('table')
     newTable.id = 'results-table'
-
-    // remove all sorting classes and set the relevant
     findAll('.sortable', tableHeader).forEach((elem) => elem.classList.remove('asc', 'desc'))
     tableHeader.querySelector(`.sortable[data-column-type="${sortAttr}"]`)?.classList.add(sortAsc ? 'desc' : 'asc')
     newTable.appendChild(tableHeader)

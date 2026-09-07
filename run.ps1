@@ -1,7 +1,4 @@
-param(
-    [string]$Test = "tests/"
-)
-
+param([string]$Test = "tests/")
 $ResultsDir = "allure-results"
 Write-Host "`n==> Running tests..." -ForegroundColor Cyan
 python -m pytest $Test
