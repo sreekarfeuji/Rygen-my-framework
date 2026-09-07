@@ -86,13 +86,7 @@ class Order(BasePage):
                         self.select_dropdown(locator, value)
 
     @allure.step("Fill basic information")
-    def basic_information(
-        self,
-        direction=None,
-        billing_terms=None,
-        requested_mode=None,
-        internal_notes=None,
-    ):
+    def basic_information(self,direction=None,billing_terms=None,requested_mode=None,internal_notes=None,):
         if direction:
             self.select_dropdown(self.direction, direction)
 
