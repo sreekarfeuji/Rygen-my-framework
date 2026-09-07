@@ -23,6 +23,5 @@ def test2(logged_in: Page):
                 order.basic_information(**section_data)
             else:
                 order.common_component(test_name, section, section_data)
-    logged_in.wait_for_timeout(1000000)
     order.click_create_order()
-    logged_in.wait_for_timeout(1000000)
+    logged_in.wait_for_timeout(10000)

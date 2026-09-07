@@ -31,8 +31,27 @@ class LoginPage(BasePage):
         expect(self.page).to_have_url(re.compile(r"qa\.rygen\.com/corsair"), timeout=15000)
 
     @allure.step("Login as {username}")
-    def login(self, username, password):
-        self.navigate(username)
-        self.enter_password(password)
-        self.click_sign_in()
-        self.is_visible()
+    def login(self, username, password, max_retries=2):
+        for attempt in range(1, max_retries + 1):
+            try:
+                self.navigate(username)
+                self.enter_password(password)
+                self.click_sign_in()
+                self.is_visible()
+                return
+            except Exception as e:
+                if attempt < max_retries:
+                    print(f"[Attempt {attempt}/{max_retries}] Login failed. Retrying...")
+                    self.page.reload()
+                else:
+                    try:
+                        allure.attach(
+                            self.page.screenshot(full_page=True),
+                            name="login_failure_screenshot",
+                            attachment_type=allure.attachment_type.PNG,
+                        )
+                    except Exception as screenshot_err:
+                        print(f"Failed to capture login failure screenshot: {screenshot_err}")
+                    raise e
+
+
