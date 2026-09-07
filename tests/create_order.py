@@ -1,22 +1,16 @@
 import json
 import random
-
 import allure
 from playwright.sync_api import Page
-
 from pages.order import Order
 from config import DOMAIN
-
-
 def test2(logged_in: Page):
     order = Order(logged_in)
-
     order.select_domain_modal(DOMAIN)
     order.cancel_click()
     order.click_order()
     order.cancel_click()
     order.click_order()
-
     with open("test-data/create_order.json", "r") as file:
         test_data = json.load(file)
     suffix = random.randint(10000, 99999)
@@ -29,5 +23,6 @@ def test2(logged_in: Page):
                 order.basic_information(**section_data)
             else:
                 order.common_component(test_name, section, section_data)
+    logged_in.wait_for_timeout(1000000)
     order.click_create_order()
-    logged_in.wait_for_timeout(100)
+    logged_in.wait_for_timeout(1000000)

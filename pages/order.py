@@ -13,7 +13,7 @@ class Order(BasePage):
             '//ul[@class="nav-list nav-list-nested"]//span[text()="Order"]'
         )
         self.new_order = page.locator(
-            '//a[@href="/corsair/order/entry"]/span[@class="p-button-icon p-button-icon-right pi pi-plus"]'
+            '//span[text()="New Order"]'
         )
         self.cancel = page.locator(
             '//button[@type="button"]/span[text()="Cancel"]'
@@ -27,22 +27,18 @@ class Order(BasePage):
         self.section_field = lambda section, field_type, label: page.locator(
             f"//div[@id='{section}']//label[normalize-space()='{label}']/..//*[self::{field_type}]"
         )
-        self.direction = page.locator(
-            "//span[@id='direction'] | //label[normalize-space()='Direction']/..//*[self::span]"
-        ).first
-        self.billing_terms = page.locator(
-            "//span[@id='billing-terms'] | //span[@id='billing_terms'] | //label[normalize-space()='Billing Terms']/..//*[self::span]"
-        ).first
+        self.direction = page.locator("#direction")
+        self.billing_terms = page.locator("#billing-terms")
         self.remove_btn = page.locator(
             "//button[contains(@class,'remove-button') and @aria-label='Remove']"
             " | //button[@aria-label='Remove']//span[contains(@class,'pi-times')]/.."
-        ).first
+        )
         self.create_order_btn = page.locator(
             "//button[contains(@aria-label,'Create Order') or .//span[contains(text(),'Create Order')]]"
-        ).first
+        )
         self.toast = page.locator(
             ".p-toast-message, .p-message, [class*='toast'], [class*='success']"
-        ).first
+        )
 
     @allure.step("Click Order > New Order")
     def click_order(self):
