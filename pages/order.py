@@ -1,7 +1,7 @@
 import re
 import allure
 from playwright.sync_api import expect
-from pages.base import BasePage
+from base_class.base import BasePage
 class Order(BasePage):
     def __init__(self, page):
         super().__init__(page)
@@ -55,14 +55,11 @@ class Order(BasePage):
     def basic_information(self,direction=None,billing_terms=None,requested_mode=None,internal_notes=None,):
         if direction:
             self.select_dropdown(self.direction, direction)
-
         if billing_terms:
             self.select_dropdown(self.billing_terms, billing_terms)
-
     @allure.step("Submit: Create Order")
     def click_create_order(self):
         if self.remove_btn.count() > 0:
             self.scroll_and_click(self.remove_btn)
             self.wait(500)
-
         self.scroll_and_click(self.create_order_btn)

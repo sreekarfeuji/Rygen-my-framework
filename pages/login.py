@@ -1,7 +1,7 @@
 import re
 import allure
 from playwright.sync_api import expect
-from pages.base import BasePage
+from base_class.base import BasePage
 from config import Base_Url
 
 
