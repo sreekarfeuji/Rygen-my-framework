@@ -26,7 +26,6 @@
                 "Requested_Earliest_Pickup": "02/20/2026 08:00 am",
                 "Requested_Latest_Pickup": "02/28/2026 05:00 pm"
             }
-
         },
         "stop-2": {
             "span": {
@@ -53,7 +52,6 @@
                 "Requested_Earliest_Dropoff": "03/01/2026 09:00 am",
                 "Requested_Latest_Dropoff": "03/05/2026 05:00 pm"
             }
-
         },
         "line-item-num-1": {
             "span": {

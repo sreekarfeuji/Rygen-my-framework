@@ -1,44 +1,58 @@
-import re
+import random
 import allure
-from playwright.sync_api import expect
+from playwright.sync_api import Page
 from base_class.base import BasePage
+
+
 class Order(BasePage):
-    def __init__(self, page):
+    def __init__(self, page: Page):
         super().__init__(page)
         self.order = page.locator('//ul[@class="nav-list nav-list-nested"]//span[text()="Order"]')
         self.new_order = page.locator('//span[text()="New Order"]')
         self.cancel = page.locator('//button[@type="button"]/span[text()="Cancel"]').first
         self.domain_option = lambda value: page.locator(f"//div[contains(@class,'modal-content')]//span[text()='{value}']")
-        self.radio_input = lambda section, label: page.locator(f"//div[@id='{section}']//label[text()='{label}']/..//input")
-        self.section_field = lambda section, field_type, label: page.locator(f"//div[@id='{section}']//label[normalize-space()='{label}']/..//*[self::{field_type}]")
+        self.radio_input = lambda section, label: page.locator(
+            f"//div[@id='{section}']//label[normalize-space()='{label}']/..//input"
+        )
+        self.section_field = lambda section, field_type, label: page.locator(
+            f"//div[@id='{section}']//label[normalize-space()='{label}']/..//*[self::{field_type}]"
+        )
         self.direction = page.locator("#direction")
         self.billing_terms = page.locator("#billing-terms")
-        self.remove_btn = page.locator("//button[contains(@class,'remove-button') and @aria-label='Remove'] | //button[@aria-label='Remove']//span[contains(@class,'pi-times')]/..")
+        self.requested_mode = page.locator("#requested-mode")
+        self.internal_notes = page.locator("#internal-notes")
+        self.remove_btn = page.locator(
+            "//button[contains(@class,'remove-button') and @aria-label='Remove'] "
+            "| //button[@aria-label='Remove']//span[contains(@class,'pi-times')]/.."
+        ).first
         self.create_order_btn = page.locator("//button[contains(@aria-label,'Create Order') or .//span[contains(text(),'Create Order')]]")
-        self.toast = page.locator(".p-toast-message, .p-message, [class*='toast'], [class*='success']")
+        self.success_toast = page.locator(".p-toast-message-success")
+
     @allure.step("Click Order > New Order")
     def click_order(self):
         self.click(self.order)
         self.click(self.new_order)
-        expect(self.page).to_have_url(re.compile(r"order/entry"), timeout=10000)
+        self.assert_url_contains(r"order/entry")
+
     def cancel_click(self):
         if self.cancel.count() > 0:
             self.click(self.cancel)
+
     @allure.step("Select domain: {value}")
     def select_domain_modal(self, value):
-        self.scroll_and_click(self.domain_option(value))
+        self.click(self.domain_option(value))
+
     def handle_radio_buttons(self, section, radio_data):
         for field, value in radio_data.items():
             if str(value).lower() == "yes":
                 label = field.replace("_", " ")
                 self.radio_input(section, label).click(force=True)
+
     @allure.step("Fill section: {section}")
-    def common_component(self, test_name, section, section_data):
+    def common_component(self, section, section_data):
         for field_type, fields in section_data.items():
-            if field_type in ["radio-buttons", "radio_buttons"]:
-                continue
             for field, value in fields.items():
-                if field in ["radio-buttons"] and isinstance(value, dict):
+                if field == "radio-buttons" and isinstance(value, dict):
                     self.handle_radio_buttons(section, value)
                     continue
                 if isinstance(value, dict):
@@ -52,14 +66,34 @@ class Order(BasePage):
                         self.select_dropdown(locator, value)
 
     @allure.step("Fill basic information")
-    def basic_information(self,direction=None,billing_terms=None,requested_mode=None,internal_notes=None,):
+    def basic_information(self, direction=None, billing_terms=None, requested_mode=None, internal_notes=None):
         if direction:
             self.select_dropdown(self.direction, direction)
         if billing_terms:
             self.select_dropdown(self.billing_terms, billing_terms)
+        if requested_mode:
+            self.select_dropdown(self.requested_mode, requested_mode)
+        if internal_notes:
+            self.fill(self.internal_notes, internal_notes)
+
+    @allure.step("Fill order form using test data")
+    def fill_order_form(self, data):
+        suffix = random.randint(10000, 99999)
+        for section, section_data in data.items():
+            if "input" in section_data and "Location_Code" in section_data["input"]:
+                section_data["input"]["Location_Code"] = (
+                    f"{section_data['input']['Location_Code']}_{suffix}"
+                )
+            if section == "basic-information":
+                self.basic_information(**section_data)
+            else:
+                self.common_component(section, section_data)
+
     @allure.step("Submit: Create Order")
     def click_create_order(self):
         if self.remove_btn.count() > 0:
-            self.scroll_and_click(self.remove_btn)
+            self.click(self.remove_btn)
             self.wait(500)
-        self.scroll_and_click(self.create_order_btn)
+        self.click(self.create_order_btn)
+        self.assert_visible(self.success_toast)
+        self.assert_text_contains(self.success_toast, "success")
