@@ -18,13 +18,13 @@
                 "Address_Line_3": "Near Central Mall",
                 "City": "Anchorage",
                 "Postal_Code": "99999",
-                "Location_Code": "ANC009",
+                "Location_Code": "31374",
                 "Contact_Name": "Test User",
                 "Contact_Phone_Number": "9876543210",
                 "Contact_Email": "testuser@example.com",
                 "Company_Name": "Test Logistics Pvt Ltd",
-                "Requested_Earliest_Pickup": "02/20/2026 08:00 am",
-                "Requested_Latest_Pickup": "02/28/2026 05:00 pm"
+                "Requested_Earliest_Pickup": "TODAY+5 08:00 am",
+                "Requested_Latest_Pickup": "TODAY+10 05:00 pm"
             }
         },
         "stop-2": {
@@ -43,14 +43,14 @@
                 "Address_Line_2": "Building B",
                 "Address_Line_3": "Gate 4",
                 "City": "Dallas",
-                "Postal_Code": "33333",
+                "Postal_Code": "31374",
                 "Location_Code": "DAL009",
                 "Contact_Name": "Receiver User",
                 "Contact_Phone_Number": "9123456789",
                 "Contact_Email": "receiver@example.com",
                 "Company_Name": "Destination Hub Pvt Ltd",
-                "Requested_Earliest_Dropoff": "03/01/2026 09:00 am",
-                "Requested_Latest_Dropoff": "03/05/2026 05:00 pm"
+                "Requested_Earliest_Dropoff": "TODAY+15 09:00 am",
+                "Requested_Latest_Dropoff": "TODAY+20 05:00 pm"
             }
         },
         "line-item-num-1": {

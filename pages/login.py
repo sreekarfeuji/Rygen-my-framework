@@ -15,9 +15,9 @@ class LoginPage(BasePage):
     @allure.step("Login as {username}")
     def login(self, username, password):
         self.fill(self.username_input, username)
+        self.assert_value(self.username_input, username)  # verify before page transitions
         self.click(self.continue_btn)
         self.assert_visible(self.password_input)
-        self.assert_value(self.username_input, username)
         self.fill(self.password_input, password)
         self.click(self.signin_btn)
         self.assert_visible(self.dashboard_marker)

@@ -19,6 +19,8 @@ class BasePage:
         self.page.wait_for_timeout(ms)
     def assert_visible(self, locator, message="Element not visible"):
         expect(locator).to_be_visible(timeout=10000)
+    def assert_hidden(self, locator):
+        expect(locator).to_be_hidden(timeout=10000)
     def assert_value(self, locator, expected_value):
         expect(locator).to_have_value(str(expected_value), timeout=10000)
     def assert_class_contains(self, locator, class_fragment):

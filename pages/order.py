@@ -1,4 +1,3 @@
-import random
 import allure
 from playwright.sync_api import Page
 from base_class.base import BasePage
@@ -11,6 +10,9 @@ class Order(BasePage):
         self.new_order = page.locator('//span[text()="New Order"]')
         self.cancel = page.locator('//button[@type="button"]/span[text()="Cancel"]').first
         self.domain_option = lambda value: page.locator(f"//div[contains(@class,'modal-content')]//span[text()='{value}']")
+        self.assigned_to = lambda value: page.locator(
+            f"//button[contains(@class,'p-button')]//span[contains(@class,'p-button-label') and normalize-space()='Assigned to {value}']"
+        )
         self.radio_input = lambda section, label: page.locator(
             f"//div[@id='{section}']//label[normalize-space()='{label}']/..//input"
         )
@@ -28,11 +30,30 @@ class Order(BasePage):
         self.create_order_btn = page.locator("//button[contains(@aria-label,'Create Order') or .//span[contains(text(),'Create Order')]]")
         self.success_toast = page.locator(".p-toast-message-success")
 
+        # ── Summary tile locators (top of Line Items section) ──────────────────
+        self.tile_total_packaging = page.locator(
+            "//span[normalize-space()='Total Packaging Units']/preceding-sibling::span[1]"
+        )
+        self.tile_total_handling = page.locator(
+            "//span[normalize-space()='Total Handling Units']/preceding-sibling::span[1]"
+        )
+        self.tile_total_weight = page.locator(
+            "//span[normalize-space()='Total Weight']/preceding-sibling::span[1]"
+        )
+        self.tile_linear_feet = page.locator(
+            "//span[normalize-space()='Linear Feet']/preceding-sibling::span[1]"
+        )
+        self.tile_cubic_feet = page.locator(
+            "//span[normalize-space()='Cubic Feet']/preceding-sibling::span[1]"
+        )
+
     @allure.step("Click Order > New Order")
-    def click_order(self):
+    def click_order(self, domain=None):
         self.click(self.order)
         self.click(self.new_order)
         self.assert_url_contains(r"order/entry")
+        if domain:
+            self.assert_visible(self.assigned_to(domain))
 
     def cancel_click(self):
         if self.cancel.count() > 0:
@@ -78,22 +99,18 @@ class Order(BasePage):
 
     @allure.step("Fill order form using test data")
     def fill_order_form(self, data):
-        suffix = random.randint(10000, 99999)
         for section, section_data in data.items():
-            if "input" in section_data and "Location_Code" in section_data["input"]:
-                section_data["input"]["Location_Code"] = (
-                    f"{section_data['input']['Location_Code']}_{suffix}"
-                )
             if section == "basic-information":
                 self.basic_information(**section_data)
             else:
                 self.common_component(section, section_data)
 
+
     @allure.step("Submit: Create Order")
     def click_create_order(self):
         if self.remove_btn.count() > 0:
             self.click(self.remove_btn)
-            self.wait(500)
+            self.assert_hidden(self.remove_btn)  # wait for removal to complete
         self.click(self.create_order_btn)
         self.assert_visible(self.success_toast)
         self.assert_text_contains(self.success_toast, "success")
