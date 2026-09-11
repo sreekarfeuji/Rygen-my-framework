@@ -6,7 +6,7 @@
                 "Timezone": "America/Managua (CST -06:00)",
                 "radio-buttons": {
                     "Appointment_Required": "Yes",
-                    "Save_to_Address_Book": "Yes",
+                    "Save_to_Address_Book": "No",
                     "Requested_Date_Lock": "Yes",
                     "Requested_Time_Lock": "No"
                 }
@@ -18,7 +18,7 @@
                 "Address_Line_3": "Near Central Mall",
                 "City": "Anchorage",
                 "Postal_Code": "99999",
-                "Location_Code": "31374",
+                "Location_Code": "",
                 "Contact_Name": "Test User",
                 "Contact_Phone_Number": "9876543210",
                 "Contact_Email": "testuser@example.com",
@@ -32,7 +32,7 @@
                 "State": "Texas",
                 "radio-buttons": {
                     "Appointment_Required": "Yes",
-                    "Save_to_Address_Book": "Yes",
+                    "Save_to_Address_Book": "No",
                     "Requested_Date_Lock": "Yes",
                     "Requested_Time_Lock": "Yes"
                 }
@@ -43,8 +43,8 @@
                 "Address_Line_2": "Building B",
                 "Address_Line_3": "Gate 4",
                 "City": "Dallas",
-                "Postal_Code": "31374",
-                "Location_Code": "DAL009",
+                "Postal_Code": "31375",
+                "Location_Code": "",
                 "Contact_Name": "Receiver User",
                 "Contact_Phone_Number": "9123456789",
                 "Contact_Email": "receiver@example.com",
