@@ -2,6 +2,7 @@ import logging
 import configparser
 import json
 from pathlib import Path
+import allure
 import pytest
 from playwright.sync_api import Page
 
@@ -9,6 +10,30 @@ from pages.login import LoginPage
 from utils.data_loader import DataLoader
 
 logger = logging.getLogger(__name__)
+
+
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    if not report.failed:
+        return
+
+    page = item.funcargs.get("page")
+    if page is None:
+        return
+
+    try:
+        if page.is_closed():
+            return
+        screenshot = page.screenshot(full_page=True, timeout=10000)
+        allure.attach(
+            screenshot,
+            name=f"Failure screenshot - {item.name} - {report.when}",
+            attachment_type=allure.attachment_type.PNG,
+        )
+    except Exception:
+        logger.exception("Could not attach failure screenshot for %s", item.nodeid)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parent

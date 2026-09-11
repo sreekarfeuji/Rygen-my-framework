@@ -44,14 +44,15 @@ switch ($Browser) {
         $BrowserArgs = @("--browser", "firefox")
     }
 }
-$ResultsDir = Join-Path $PSScriptRoot "reports/allure-results"
+$RunId = Get-Date -Format "yyyyMMdd-HHmmss-fff"
+$ResultsDir = Join-Path $PSScriptRoot "reports/allure-runs/$RunId"
 $HtmlReport = Join-Path $PSScriptRoot "reports/report.html"
 Push-Location $PSScriptRoot
 try {
     Write-Host "`n==> Running tests on $BrowserName $RunMode..." -ForegroundColor Cyan
-    python -m pytest $Test @BrowserArgs @WorkerArgs
+    python -m pytest $Test @BrowserArgs @WorkerArgs --alluredir $ResultsDir
     $TestExitCode = $LASTEXITCODE
-    Write-Host "`n==> Opening HTML report..." -ForegroundColor Cyan
+    Write-Host "`n==> Opening report for this run..." -ForegroundColor Cyan
     $allureCli = Get-Command allure -ErrorAction SilentlyContinue
     if ($allureCli) {
         allure serve $ResultsDir

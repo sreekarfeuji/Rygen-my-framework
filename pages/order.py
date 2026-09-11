@@ -41,11 +41,11 @@ class Order(BasePage):
         self.click(self.order)
         self.click(self.new_order)
         self.assert_url_contains(r"order/entry")
-        try:
-            self.assert_visible(self.assigned_to(domain))
-        except Exception as e:
-            logger.error("Not visible domain name")
-            raise
+        if domain:
+            self.assert_visible(
+                self.assigned_to(domain),
+                f"Assigned domain '{domain}' is not visible",
+            )
 
     def cancel_click(self):
         if self.cancel.count() > 0:
