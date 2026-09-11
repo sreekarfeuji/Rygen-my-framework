@@ -20,7 +20,7 @@ class LoginPage(BasePage):
     def login(self, username, password):
         logger.info("Login started")
         self.fill(self.username_input, username)
-        self.assert_value(self.username_input, username)  # verify before page transitions
+        self.assert_value(self.username_input, username) 
         self.click(self.continue_btn)
         self.assert_visible(self.password_input)
         self.fill(self.password_input, password)

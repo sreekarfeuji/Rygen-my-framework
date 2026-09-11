@@ -27,33 +27,13 @@ def logged_in(page: Page):
     login = LoginPage(page)
     login.login(USERNAME, PASSWORD)
     yield page
-
-
 @pytest.fixture
 def domain():
     return DOMAIN
-
-
 ORDER_DATA_PATH = PROJECT_ROOT / "test-data" / "create_order.json"
 ORDER_SCENARIOS = tuple(json.loads(ORDER_DATA_PATH.read_text(encoding="utf-8")))
-
-
 @pytest.fixture(params=ORDER_SCENARIOS, ids=ORDER_SCENARIOS)
 def order_test_data(request):
     logger.info("Loading scenario: %s", request.param)
     data = DataLoader.load_json(ORDER_DATA_PATH)
     return data[request.param]
-
-
-def pytest_runtest_logstart(nodeid, location):
-    logger.info("Test started: %s", nodeid)
-
-
-def pytest_runtest_logreport(report):
-    if report.when == "call" or report.failed or report.skipped:
-        level = logging.ERROR if report.failed else logging.INFO
-        logger.log(level, "Test %s [%s]: %s", report.outcome, report.when, report.nodeid)
-
-
-def pytest_runtest_logfinish(nodeid, location):
-    logger.info("Test finished: %s", nodeid)
