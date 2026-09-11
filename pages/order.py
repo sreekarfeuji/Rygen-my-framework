@@ -1,6 +1,6 @@
 import allure
 from playwright.sync_api import Page
-from base_class.base import BasePage
+from base_class.base_page import BasePage
 
 
 class Order(BasePage):

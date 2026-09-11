@@ -1,5 +1,5 @@
 from pages.order import Order
-from assertions.order_assertions import OrderAssertions
+from base_class.order_assertions import OrderAssertions
 
 def test_create_order(logged_in, order_test_data, domain):
     order_page   = Order(logged_in)

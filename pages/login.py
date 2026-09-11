@@ -1,6 +1,6 @@
 import allure
 from playwright.sync_api import Page, expect
-from pages.base_page import BasePage
+from base_class.base_page import BasePage
 
 
 class LoginPage(BasePage):
