@@ -1,6 +1,10 @@
+import logging
 import allure
 from playwright.sync_api import Page
 from base_class.base_page import BasePage
+
+
+logger = logging.getLogger(__name__)
 
 
 class Order(BasePage):
@@ -33,6 +37,7 @@ class Order(BasePage):
 
     @allure.step("Click Order > New Order")
     def click_order(self, domain=None):
+        logger.info("Opening new order form")
         self.click(self.order)
         self.click(self.new_order)
         self.assert_url_contains(r"order/entry")
@@ -46,6 +51,7 @@ class Order(BasePage):
     @allure.step("Select domain: {value}")
     def select_domain_modal(self, value):
         self.click(self.domain_option(value))
+        logger.info("Domain selected: %s", value)
 
     def handle_radio_buttons(self, section, radio_data):
         for field, value in radio_data.items():
@@ -86,6 +92,7 @@ class Order(BasePage):
     @allure.step("Fill order form using test data")
     def fill_order_form(self, data):
         for section, section_data in data.items():
+            logger.info("Filling section: %s", section)
             if section == "basic-information":
                 self.basic_information(**section_data)
             else:
@@ -97,5 +104,6 @@ class Order(BasePage):
         if self.remove_btn.count() > 0:
             self.click(self.remove_btn)
             self.assert_hidden(self.remove_btn) 
+        logger.info("Submitting order")
         self.click(self.create_order_btn)
         self.submit_result.first.wait_for(state="visible", timeout=10000)

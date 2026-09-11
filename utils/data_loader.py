@@ -1,7 +1,11 @@
+import logging
 import json
 from pathlib import Path
 import re
 from datetime import datetime, timedelta
+
+
+logger = logging.getLogger(__name__)
 
 
 class DataLoader:
@@ -9,9 +13,12 @@ class DataLoader:
     @staticmethod
     def load_json(relative_path):
         full_path = Path(__file__).resolve().parents[1] / relative_path
+        logger.debug("Loading dataset file: %s", full_path.name)
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        return DataLoader._resolve(data)
+        resolved = DataLoader._resolve(data)
+        logger.info("Dataset loaded: %s", full_path.name)
+        return resolved
 
     @staticmethod
     def _resolve(obj):

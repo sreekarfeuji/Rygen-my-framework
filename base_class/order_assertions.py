@@ -1,9 +1,13 @@
+import logging
 import math
 import re
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
 import allure
 from playwright.sync_api import expect
+logger = logging.getLogger(__name__)
+
+
 class OrderAssertions:
     def __init__(self, order_page):
         self.order = order_page
@@ -52,10 +56,13 @@ class OrderAssertions:
                 earliest_date = datetime.strptime(earliest, "%m/%d/%Y %I:%M %p")
                 latest_date = datetime.strptime(latest, "%m/%d/%Y %I:%M %p")
             except ValueError as error:
+                logger.error("%s: Invalid dropoff date format", section)
                 raise AssertionError(
                     f"{section}: Invalid dropoff date format: {earliest!r}, {latest!r}. "
                     "Expected MM/DD/YYYY hh:mm am/pm."
                 ) from error
+            if earliest_date >= latest_date:
+                logger.error("%s: Earliest dropoff must be before latest dropoff", section)
             assert earliest_date < latest_date, (
                 f"{section}: Requested_Earliest_Dropoff ({earliest}) must be before "
                 f"Requested_Latest_Dropoff ({latest})"
@@ -74,6 +81,7 @@ class OrderAssertions:
                 pattern = self._total_pattern(
                     expected[key], unit, allow_whole_number=key == "cubic_feet"
                 )
+                logger.debug("Checking total: %s", name)
                 expect(locator).to_have_text(pattern, timeout=10000)
 
     @allure.step("Assert order submission has no field errors")
@@ -86,7 +94,8 @@ class OrderAssertions:
             messages.append(f"{field}: {message}" if field else message or "Unlabeled field error")
         if messages:
             details = "Mandatory fields missing or invalid:\n" + "\n".join(messages)
-            print(details)
+            logger.error("%s", details)
             raise AssertionError(details)
         self.order.assert_visible(self.order.success_toast)
         self.order.assert_text_contains(self.order.success_toast, "success")
+        logger.info("Order creation confirmed")

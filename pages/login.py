@@ -1,6 +1,10 @@
+import logging
 import allure
 from playwright.sync_api import Page
 from base_class.base_page import BasePage
+
+
+logger = logging.getLogger(__name__)
 
 
 class LoginPage(BasePage):
@@ -14,6 +18,7 @@ class LoginPage(BasePage):
 
     @allure.step("Login as {username}")
     def login(self, username, password):
+        logger.info("Login started")
         self.fill(self.username_input, username)
         self.assert_value(self.username_input, username)  # verify before page transitions
         self.click(self.continue_btn)
@@ -26,3 +31,4 @@ class LoginPage(BasePage):
             "Check whether the login redirect completed and the account session loaded.",
             timeout=30000,
         )
+        logger.info("Login completed; domain selector visible")

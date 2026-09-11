@@ -1,3 +1,4 @@
+import logging
 import configparser
 import json
 from pathlib import Path
@@ -6,6 +7,9 @@ from playwright.sync_api import Page
 
 from pages.login import LoginPage
 from utils.data_loader import DataLoader
+
+logger = logging.getLogger(__name__)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 config = configparser.ConfigParser()
@@ -36,5 +40,20 @@ ORDER_SCENARIOS = tuple(json.loads(ORDER_DATA_PATH.read_text(encoding="utf-8")))
 
 @pytest.fixture(params=ORDER_SCENARIOS, ids=ORDER_SCENARIOS)
 def order_test_data(request):
+    logger.info("Loading scenario: %s", request.param)
     data = DataLoader.load_json(ORDER_DATA_PATH)
     return data[request.param]
+
+
+def pytest_runtest_logstart(nodeid, location):
+    logger.info("Test started: %s", nodeid)
+
+
+def pytest_runtest_logreport(report):
+    if report.when == "call" or report.failed or report.skipped:
+        level = logging.ERROR if report.failed else logging.INFO
+        logger.log(level, "Test %s [%s]: %s", report.outcome, report.when, report.nodeid)
+
+
+def pytest_runtest_logfinish(nodeid, location):
+    logger.info("Test finished: %s", nodeid)
