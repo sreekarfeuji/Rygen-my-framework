@@ -5,5 +5,3 @@ __pycache__/
 reports/
 allure-results/
 report.html
-.venv/
-venv/

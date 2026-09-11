@@ -23,8 +23,7 @@ class Order(BasePage):
         self.internal_notes = page.locator("#internal-notes")
         self.remove_btn = page.locator(
             "//button[contains(@class,'remove-button') and @aria-label='Remove'] "
-            "| //button[@aria-label='Remove']//span[contains(@class,'pi-times')]/.."
-        ).first
+            "| //button[@aria-label='Remove']//span[contains(@class,'pi-times')]/..").first
         self.create_order_btn = page.locator("//button[contains(@aria-label,'Create Order') or .//span[contains(text(),'Create Order')]]")
         self.success_toast = page.locator(".p-toast-message-success")
         self.input_errors = page.locator(".input-error-msg:visible")
