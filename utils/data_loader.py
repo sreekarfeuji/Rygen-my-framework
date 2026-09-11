@@ -1,5 +1,5 @@
 import json
-import os
+from pathlib import Path
 import re
 from datetime import datetime, timedelta
 
@@ -8,7 +8,7 @@ class DataLoader:
 
     @staticmethod
     def load_json(relative_path):
-        full_path = os.path.join(os.getcwd(), relative_path)
+        full_path = Path(__file__).resolve().parents[1] / relative_path
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         return DataLoader._resolve(data)
@@ -26,7 +26,7 @@ class DataLoader:
     def _resolve_value(key, value):
         if isinstance(value, (dict, list)):
             return DataLoader._resolve(value)
-        if not isinstance(value, str):
+        if not isinstance(value, str) or value == "":
             return value
 
         # Resolve Location_Code: append a unique timestamp suffix

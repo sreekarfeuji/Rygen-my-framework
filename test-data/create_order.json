@@ -92,5 +92,98 @@
             "direction": "Outbound",
             "billing_terms": "Collect"
         }
+    },
+    "test_2_half_empty": {
+        "stop-1": {
+            "span": {
+                "Timezone": "America/Managua (CST -06:00)",
+                "radio-buttons": {
+                    "Appointment_Required": "",
+                    "Save_to_Address_Book": "",
+                    "Requested_Date_Lock": "",
+                    "Requested_Time_Lock": ""
+                }
+            },
+            "input": {
+                "Location_Name": "Test Warehouse",
+                "Address_Line_1": "123 Main Street",
+                "Address_Line_2": "",
+                "Address_Line_3": "",
+                "City": "Anchorage",
+                "Postal_Code": "99999",
+                "Location_Code": "",
+                "Contact_Name": "",
+                "Contact_Phone_Number": "",
+                "Contact_Email": "",
+                "Company_Name": "",
+                "Requested_Earliest_Pickup": "TODAY+5 08:00 am",
+                "Requested_Latest_Pickup": "TODAY+10 05:00 pm"
+            }
+        },
+        "stop-2": {
+            "span": {
+                "State": "Texas",
+                "radio-buttons": {
+                    "Appointment_Required": "",
+                    "Save_to_Address_Book": "",
+                    "Requested_Date_Lock": "",
+                    "Requested_Time_Lock": ""
+                }
+            },
+            "input": {
+                "Location_Name": "Destination Warehouse",
+                "Address_Line_1": "456 Industrial Parkway",
+                "Address_Line_2": "",
+                "Address_Line_3": "",
+                "City": "Dallas",
+                "Postal_Code": "31374",
+                "Location_Code": "",
+                "Contact_Name": "",
+                "Contact_Phone_Number": "",
+                "Contact_Email": "",
+                "Company_Name": "",
+                "Requested_Earliest_Dropoff": "TODAY+15 09:00 am",
+                "Requested_Latest_Dropoff": "TODAY+20 05:00 pm"
+            }
+        },
+        "line-item-num-1": {
+            "span": {
+                "radio-buttons": {
+                    "Turnable": "",
+                    "Stackable": "",
+                    "Refrigerated": "",
+                    "Save_to_Product_List": ""
+                }
+            },
+            "input": {
+                "Handling": "30",
+                "Description": "General Freight",
+                "Weight": "500",
+                "Length": "48",
+                "Width": "40",
+                "Height": "60",
+                "NMFC_Number": "",
+                "Linear_Feet": "4",
+                "Product_Number": "",
+                "Density": "12.5",
+                "Value": ""
+            }
+        },
+        "bill-to": {
+            "input": {
+                "Location_Name": "Novapath Supply Chain Systems",
+                "Address_Line_1": "1175 Revolution Mill Dr.",
+                "Address_Line_2": "",
+                "City": "Greensboro",
+                "Postal_Code": "27405"
+            },
+            "span": {
+                "State": "North Carolina"
+            }
+        },
+        "basic-information": {
+            "direction": "Outbound",
+            "billing_terms": "Collect"
+        }
     }
 }

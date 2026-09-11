@@ -10,15 +10,9 @@ class Order(BasePage):
         self.new_order = page.locator('//span[text()="New Order"]')
         self.cancel = page.locator('//button[@type="button"]/span[text()="Cancel"]').first
         self.domain_option = lambda value: page.locator(f"//div[contains(@class,'modal-content')]//span[text()='{value}']")
-        self.assigned_to = lambda value: page.locator(
-            f"//button[contains(@class,'p-button')]//span[contains(@class,'p-button-label') and normalize-space()='Assigned to {value}']"
-        )
-        self.radio_input = lambda section, label: page.locator(
-            f"//div[@id='{section}']//label[normalize-space()='{label}']/..//input"
-        )
-        self.section_field = lambda section, field_type, label: page.locator(
-            f"//div[@id='{section}']//label[normalize-space()='{label}']/..//*[self::{field_type}]"
-        )
+        self.assigned_to = lambda value: page.locator(f"//button[contains(@class,'p-button')]//span[contains(@class,'p-button-label') and normalize-space()='Assigned to {value}']")
+        self.radio_input = lambda section, label: page.locator(f"//div[@id='{section}']//label[normalize-space()='{label}']/..//input")
+        self.section_field = lambda section, field_type, label: page.locator(f"//div[@id='{section}']//label[normalize-space()='{label}']/..//*[self::{field_type}]")
         self.direction = page.locator("#direction")
         self.billing_terms = page.locator("#billing-terms")
         self.requested_mode = page.locator("#requested-mode")
@@ -29,23 +23,13 @@ class Order(BasePage):
         ).first
         self.create_order_btn = page.locator("//button[contains(@aria-label,'Create Order') or .//span[contains(text(),'Create Order')]]")
         self.success_toast = page.locator(".p-toast-message-success")
-
-        # ── Summary tile locators (top of Line Items section) ──────────────────
-        self.tile_total_packaging = page.locator(
-            "//span[normalize-space()='Total Packaging Units']/preceding-sibling::span[1]"
-        )
-        self.tile_total_handling = page.locator(
-            "//span[normalize-space()='Total Handling Units']/preceding-sibling::span[1]"
-        )
-        self.tile_total_weight = page.locator(
-            "//span[normalize-space()='Total Weight']/preceding-sibling::span[1]"
-        )
-        self.tile_linear_feet = page.locator(
-            "//span[normalize-space()='Linear Feet']/preceding-sibling::span[1]"
-        )
-        self.tile_cubic_feet = page.locator(
-            "//span[normalize-space()='Cubic Feet']/preceding-sibling::span[1]"
-        )
+        self.input_errors = page.locator(".input-error-msg:visible")
+        self.submit_result = page.locator(".input-error-msg:visible, .p-toast-message-success:visible")
+        self.tile_total_packaging = page.locator("//span[normalize-space()='Total Packaging Units']/preceding-sibling::span[1]")
+        self.tile_total_handling = page.locator("//span[normalize-space()='Total Handling Units']/preceding-sibling::span[1]")
+        self.tile_total_weight = page.locator("//span[normalize-space()='Total Weight']/preceding-sibling::span[1]")
+        self.tile_linear_feet = page.locator("//span[normalize-space()='Linear Feet']/preceding-sibling::span[1]")
+        self.tile_cubic_feet = page.locator("//span[normalize-space()='Cubic Feet']/preceding-sibling::span[1]")
 
     @allure.step("Click Order > New Order")
     def click_order(self, domain=None):
@@ -112,5 +96,4 @@ class Order(BasePage):
             self.click(self.remove_btn)
             self.assert_hidden(self.remove_btn)  # wait for removal to complete
         self.click(self.create_order_btn)
-        self.assert_visible(self.success_toast)
-        self.assert_text_contains(self.success_toast, "success")
+        self.submit_result.first.wait_for(state="visible", timeout=10000)

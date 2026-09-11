@@ -1,5 +1,5 @@
 from pages.order import Order
-from base_class.assertions import OrderAssertions
+from assertions.order_assertions import OrderAssertions
 
 def test_create_order(logged_in, order_test_data, domain):
     order_page   = Order(logged_in)
@@ -16,4 +16,5 @@ def test_create_order(logged_in, order_test_data, domain):
         if section.startswith("line-item"):
             order_assert.assert_line_item_totals(section_data)
 
-    order_page.click_create_order()
+    order_page.click_create_order()
+    order_assert.assert_order_created()

@@ -1,12 +1,16 @@
 import configparser
+import json
+from pathlib import Path
 import pytest
 from playwright.sync_api import Page
 
 from pages.login import LoginPage
-from pages.data_loader import DataLoader
+from utils.data_loader import DataLoader
 
+PROJECT_ROOT = Path(__file__).resolve().parent
 config = configparser.ConfigParser()
-config.read("config.ini")
+with (PROJECT_ROOT / "config.ini").open(encoding="utf-8") as file:
+    config.read_file(file)
 
 USERNAME = config["DEFAULT"]["USERNAME"]
 PASSWORD = config["DEFAULT"]["PASSWORD"]
@@ -26,7 +30,11 @@ def domain():
     return DOMAIN
 
 
-@pytest.fixture
-def order_test_data():
-    data = DataLoader.load_json("test-data/create_order.json")
-    return next(iter(data.values()))
+ORDER_DATA_PATH = PROJECT_ROOT / "test-data" / "create_order.json"
+ORDER_SCENARIOS = tuple(json.loads(ORDER_DATA_PATH.read_text(encoding="utf-8")))
+
+
+@pytest.fixture(params=ORDER_SCENARIOS, ids=ORDER_SCENARIOS)
+def order_test_data(request):
+    data = DataLoader.load_json(ORDER_DATA_PATH)
+    return data[request.param]

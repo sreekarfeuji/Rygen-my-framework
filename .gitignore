@@ -1,3 +1,9 @@
-allure-results
-.pytest_cache
-__pycache__ 
+__pycache__/
+*.py[cod]
+*.pyc.*
+.pytest_cache/
+reports/
+allure-results/
+report.html
+.venv/
+venv/
