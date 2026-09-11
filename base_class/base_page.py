@@ -17,8 +17,10 @@ class BasePage:
             self.page.get_by_text(str(value), exact=False).click()
     def wait(self, ms):
         self.page.wait_for_timeout(ms)
-    def assert_visible(self, locator, message="Element not visible"):
-        expect(locator).to_be_visible(timeout=10000)
+    def assert_visible(self, locator, message="Element not visible", timeout=10000):
+        expect(locator, message).to_be_visible(timeout=timeout)
+    def assert_enabled(self, locator, message="Element not enabled", timeout=10000):
+        expect(locator, message).to_be_enabled(timeout=timeout)
     def assert_hidden(self, locator):
         expect(locator).to_be_hidden(timeout=10000)
     def assert_value(self, locator, expected_value):

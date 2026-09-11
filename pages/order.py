@@ -51,7 +51,9 @@ class Order(BasePage):
         for field, value in radio_data.items():
             if str(value).lower() == "yes":
                 label = field.replace("_", " ")
-                self.radio_input(section, label).click(force=True)
+                locator = self.radio_input(section, label)
+                self.assert_enabled(locator, f"{section}: {label} is not enabled")
+                locator.click(force=True)
 
     @allure.step("Fill section: {section}")
     def common_component(self, section, section_data):
@@ -94,6 +96,6 @@ class Order(BasePage):
     def click_create_order(self):
         if self.remove_btn.count() > 0:
             self.click(self.remove_btn)
-            self.assert_hidden(self.remove_btn)  # wait for removal to complete
+            self.assert_hidden(self.remove_btn) 
         self.click(self.create_order_btn)
         self.submit_result.first.wait_for(state="visible", timeout=10000)

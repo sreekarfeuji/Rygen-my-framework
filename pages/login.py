@@ -1,5 +1,5 @@
 import allure
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 from base_class.base_page import BasePage
 
 
@@ -20,8 +20,9 @@ class LoginPage(BasePage):
         self.assert_visible(self.password_input)
         self.fill(self.password_input, password)
         self.click(self.signin_btn)
-        expect(
+        self.assert_visible(
             self.dashboard_marker,
             "Login did not reach 'Select a Domain' within 30 seconds. "
             "Check whether the login redirect completed and the account session loaded.",
-        ).to_be_visible(timeout=30000)
+            timeout=30000,
+        )
