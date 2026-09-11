@@ -48,8 +48,12 @@ class Order(BasePage):
             )
 
     def cancel_click(self):
-        if self.cancel.count() > 0:
-            self.click(self.cancel)
+        try:
+            if self.cancel.count() > 0:
+                self.click(self.cancel)
+        except Exception:
+            logger.exception("Failed to click Cancel")
+            raise
 
     @allure.step("Select domain: {value}")
     def select_domain_modal(self, value):

@@ -11,31 +11,19 @@ class DataLoader:
         logger.debug("Loading dataset file: %s", full_path.name)
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        resolved = DataLoader._resolve(data)
+        resolved = DataLoader._resolve_dates(data)
         logger.info("Dataset loaded: %s", full_path.name)
         return resolved
     @staticmethod
-    def _resolve(obj):
+    def _resolve_dates(obj):
         if isinstance(obj, dict):
-            return {k: DataLoader._resolve_value(k, v) for k, v in obj.items()}
+            return {k: DataLoader._resolve_dates(v) for k, v in obj.items()}
         if isinstance(obj, list):
-            return [DataLoader._resolve(item) for item in obj]
+            return [DataLoader._resolve_dates(item) for item in obj]
+        if isinstance(obj, str):
+            match = re.match(r"TODAY([+-]\d+)\s+(.*)", obj, re.IGNORECASE)
+            if match:
+                offset = int(match.group(1))
+                resolved_date = (datetime.today() + timedelta(days=offset)).strftime("%m/%d/%Y")
+                return f"{resolved_date} {match.group(2)}"
         return obj
-    @staticmethod
-    def _resolve_value(key, value):
-        if isinstance(value, (dict, list)):
-            return DataLoader._resolve(value)
-        if not isinstance(value, str) or value == "":
-            return value
-        if key == "Location_Code":
-            suffix = datetime.now().strftime("%H%M%S")
-            return f"{value}_{suffix}"
-
-        match = re.match(r"TODAY([+-]\d+)\s+(.*)", value, re.IGNORECASE)
-        if match:
-            offset = int(match.group(1))
-            time_part = match.group(2)
-            resolved_date = (datetime.today() + timedelta(days=offset)).strftime("%m/%d/%Y")
-            return f"{resolved_date} {time_part}"
-
-        return value
